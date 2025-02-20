@@ -1,4 +1,5 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
+from typing import Optional
 
 class RecipeCreate(BaseModel):
     title: str
@@ -13,3 +14,48 @@ class Recipe(RecipeCreate):
 
     class Config:
         orm_mode = True
+
+class RecipeOut(BaseModel):
+    id: int
+    title: str
+    cuisine_type: str
+    cooking_time: int
+    ingredients: str
+    instructions: str
+
+    class Config:
+        from_attributes = True
+
+class UserCreate(BaseModel):
+    username: str
+    email: EmailStr
+    password: str
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+class User(UserCreate):
+    id: int
+    username: str
+    email: EmailStr
+
+    class Config:
+        orm_mode = True
+
+class FavouriteCreate(BaseModel):
+    user_id: int
+    recipe_id: int
+
+class Favourite(FavouriteCreate):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    email: Optional[str] = None
