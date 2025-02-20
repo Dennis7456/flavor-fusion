@@ -52,13 +52,17 @@ def delete_recipe(db: Session, recipe_id: int, current_user: User):
     return db_recipe
 
 def get_users(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.User).offset(skip).limit(limit).all()
+    users = db.query(models.User).offset(skip).limit(limit).all()
+    if not users:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No users found")
+    return users
 
 def get_user_by_email(db: Session, email: str):
-    return db.query(models.User).filter(models.User.email == email).first()
+    user = db.query(models.User).filter(models.User.email == email).first()
+    return user
 
 def create_user(db: Session, user: schemas.UserCreate):
-    hashed_password = models.user.get_password_hash(user.password)
+    hashed_password = models.User.get_password_hash(user.password)
     db_user = models.User(
         username=user.username,
         email=user.email,
@@ -67,7 +71,12 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    return db_user
+
+    user_data = schemas.UserResponse.model_validate(db_user).model_dump()
+
+    user_data.pop("hashed_password", None)
+    
+    return user_data
 
 def toggle_favorite(db: Session, recipe_id: int, user_id: int):
     """Toggle favorite (like/unlike) for a recipe"""
