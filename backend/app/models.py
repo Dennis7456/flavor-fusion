@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey, Table
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, Table, UniqueConstraint
 from sqlalchemy.orm import relationship
 from .database import Base
 from passlib.context import CryptContext
@@ -10,7 +10,8 @@ favourites = Table(
     "favourites",
     Base.metadata,
     Column("user_id", Integer, ForeignKey("users.id"), primary_key=True),
-    Column("rstrecipe_id", Integer, ForeignKey("recipes.id"), primary_key=True),
+    Column("recipe_id", Integer, ForeignKey("recipes.id"), primary_key=True),
+    UniqueConstraint("user_id", "recipe_id", name="unique_user_recipe")
 )
 
 class User(Base):

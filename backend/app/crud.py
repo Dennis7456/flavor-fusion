@@ -69,13 +69,36 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
-def favorite_recipe(db: Session, user_id: int, recipe_id: int):
+def toggle_favorite(db: Session, recipe_id: int, user_id: int):
+    """Toggle favorite (like/unlike) for a recipe"""
     if not user_id:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
-    db_favorite = models.Favorite(user_id=user_id, recipe_id=recipe_id)
-    db.add(db_favorite)
+    
+    recipe = db.query(models.Recipe).filter(models.Recipe.id == recipe_id).first()
+    if not recipe:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Recipe not found")
+    
+    favorite = db.query(favourites).filter(
+        favourites.c.user_id == user_id, 
+        favourites.c.recipe_id == recipe_id
+        ).first()
+    
+    if favorite:
+        db.execute(
+            favourites.delete().where(
+                (favourites.c.user_id == user_id) & (favourites.c.recipe_id == recipe_id)
+                )
+                )  
+        # Unlike
+        action = "unliked"
+    else:
+        db.execute(
+            favourites.insert().values(user_id=user_id, recipe_id=recipe_id))  
+        # Like
+        action = "liked"
+
     db.commit()
-    return db_favorite
+    return {"message": f"Recipe {action} successfully"}
 
 def get_favorites(db: Session, user_id: int):
     if not user_id:
@@ -83,6 +106,9 @@ def get_favorites(db: Session, user_id: int):
     
     stmt = select(Recipe).join(favourites).where(favourites.c.user_id == user_id)
     favorite_recipes = db.execute(stmt).scalars().all()
-
     return favorite_recipes
+
+def count_favorites(db: Session, recipe_id: int):
+    stmt = select(favourites).where(favourites.c.recipe_id == recipe_id)
+    return len(db.execute(stmt).scalars().all())
     

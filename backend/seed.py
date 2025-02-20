@@ -20,7 +20,11 @@ try:
     ]
 
     db.add_all(users)
-    db.commit()
+    db.commit()  # Commit to ensure users have IDs
+
+    # Refresh users to get their IDs
+    for user in users:
+        db.refresh(user)
 
     # Create fake recipes
     recipes = [
@@ -36,14 +40,18 @@ try:
     ]
 
     db.add_all(recipes)
-    db.commit()
+    db.commit()  # Commit to ensure recipes have IDs
+
+    # Refresh recipes to get their IDs
+    for recipe in recipes:
+        db.refresh(recipe)
 
     # Add some favourites
     for user in users:
-        # Randomly select 3 recipes to favourite
         favourite_recipes = random.sample(recipes, 3)
         for recipe in favourite_recipes:
-            user.favourites.append(recipe)
+            stmt = favourites.insert().values(user_id=user.id, recipe_id=recipe.id)
+            db.execute(stmt)
 
     db.commit()
 
