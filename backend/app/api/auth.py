@@ -22,6 +22,7 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
 async def login_for_access_token(
     form_data: OAuth2EmailPasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = crud.get_user_by_email(db, email=form_data.username)
+
     if not user or not user.verify_password(form_data.password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -29,4 +30,12 @@ async def login_for_access_token(
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token = auth.create_access_token(data={"sub": user.email})
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {
+        "access_token": access_token, 
+        "token_type": "bearer",
+        "user": schemas.UserBase(
+            id=user.id,
+            email=user.email,
+            username=user.username
+        )
+        }

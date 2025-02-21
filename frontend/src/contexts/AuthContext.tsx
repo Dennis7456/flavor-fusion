@@ -42,6 +42,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   interface LoginResponse {
+    access_token: string;
+    token_type: string;
     user: User;
   }
 
@@ -74,14 +76,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return response.json();
     },
     onSuccess: (data) => {
-      setUser(data.user);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      toast({
-        title: "Welcome back!",
-        description: "You have successfully logged in.",
-      });
-      // navigate("/dashboard");
-    },
+      if (!data.access_token || !data.user) {
+        toast({ variant: "destructive", title: "Error", description: "Invalid login response." });
+        return;
+      }
+
+        localStorage.setItem("token", data.access_token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        setUser(data.user);
+
+        toast({ title: "Welcome back!", description: "You have successfully logged in." });
+        navigate("/dashboard");
+    },    
     onError: (error) => {
       toast({
         variant: "destructive",

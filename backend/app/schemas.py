@@ -51,6 +51,14 @@ class User(UserCreate):
     class Config:
         orm_mode = True
 
+class UserBase(BaseModel):
+    id: int
+    email: EmailStr
+    username: str
+
+    class Config:
+        from_attributes = True
+
 class FavouriteCreate(BaseModel):
     user_id: int
     recipe_id: int
@@ -64,6 +72,7 @@ class Favourite(FavouriteCreate):
 class Token(BaseModel):
     access_token: str
     token_type: str
+    user: UserBase
 
 class TokenData(BaseModel):
     email: Optional[str] = None

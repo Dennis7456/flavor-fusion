@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import {ErrorBoundary} from 'react-error-boundary';
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -18,9 +19,20 @@ import Test from "./pages/Test";
 
 const queryClient = new QueryClient();
 
+const ErrorFallBack = ({ error }: { error: Error }) => {
+  return (
+    <div className="p-4 bg-red-100 text-red-700 rounded-md text-center h-screen">
+      <h1 className="font-bold text-3xl">Oops!</h1>
+      <h2 className="font-bold">Something went wrong</h2>
+      <pre style={{ whiteSpace: "normal" }}>{error.message}</pre>
+    </div>
+  );
+}
+
 const App = () => (
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>
+      <ErrorBoundary FallbackComponent={ErrorFallBack}>
       <AuthProvider>
         <TooltipProvider>
           <Toaster />
@@ -30,17 +42,18 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/recipes" element={<Recipes />} />
               <Route path="/recipe/:id" element={<Recipe />} />
               <Route path="*" element={<NotFound />} />
               <Route element={<ProtectedRoute />}>
-              <Route path="/test" element={<Test/>} />
+              {/* <Route path="/test" element={<Test/>} /> */}
+              <Route path="/dashboard" element={<Dashboard />} />
               </Route>
             </Route>
           </Routes>
         </TooltipProvider>
       </AuthProvider>
+      </ErrorBoundary>
     </QueryClientProvider>
   </BrowserRouter>
 );

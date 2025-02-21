@@ -69,7 +69,7 @@ const Dashboard = () => {
         title: "Success",
         description: "Recipe updated successfully!",
       });
-      queryClient.invalidateQueries(["userRecipes", user?.id]);
+      queryClient.invalidateQueries({ queryKey: ["userRecipes", user?.id] });
     },
     onError: () => {
       toast({
@@ -102,7 +102,7 @@ const Dashboard = () => {
         title: "Success",
         description: "Recipe deleted successfully",
       });
-      queryClient.invalidateQueries(["userRecipes", user?.id]);
+      queryClient.invalidateQueries({ queryKey: ["userRecipes", user?.id] });
     },
     onError: () => {
       toast({
