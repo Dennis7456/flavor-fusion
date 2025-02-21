@@ -1,10 +1,15 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Form
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from .. import schemas, crud, auth
 from ..database import get_db
 
 router = APIRouter()
+
+class OAuth2EmailPasswordRequestForm:
+    def __init__(self, email: str = Form(...), password: str = Form(...)):
+        self.username = email  # Map email to username for compatibility
+        self.password = password
 
 @router.post("/register", response_model=schemas.UserResponse)
 def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -15,7 +20,7 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 @router.post("/login", response_model=schemas.Token)
 async def login_for_access_token(
-    form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    form_data: OAuth2EmailPasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = crud.get_user_by_email(db, email=form_data.username)
     if not user or not user.verify_password(form_data.password):
         raise HTTPException(
