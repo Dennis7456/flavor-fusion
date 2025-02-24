@@ -60,7 +60,7 @@ This is a full-stack recipe management and meal planning application. Users can 
 
 1. Clone the repository  
    ```sh
-   git clone https://github.com/yourusername/recipe-planner-app.git
+   git clone git@github.com:Dennis7456/flavor-fusion.git
    cd recipe-planner-app/backend
    ```  
 2. Create and activate a virtual environment  
