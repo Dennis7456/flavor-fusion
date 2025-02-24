@@ -1,169 +1,146 @@
-### Repository: `recipe-planner-app`  
+# 🍽️ Recipe Planner App  
 
-# 🍽️ Recipe Management & Meal Planning Platform  
+**Your All-in-One Meal Planning Solution**  
+Effortlessly organize recipes, plan meals, and generate shopping lists with this full-stack application. Built with React, FastAPI, and PostgreSQL.  
 
-## Overview  
-This is a full-stack recipe management and meal planning application. Users can create, browse, and save their favorite recipes. The application features a fully functional frontend built with React and a backend powered by FastAPI with PostgreSQL.  
+---
+
+## 🌟 Features  
+
+### Core Features  
+✅ **Recipe Management**  
+Create, browse, update, and delete recipes with ease.  
+
+✅ **Smart Filtering**  
+Filter recipes by cuisine type, cooking time, or dietary preferences.  
+
+✅ **Favorites System**  
+Save your go-to recipes for quick access.  
+
+✅ **Optimistic UI**  
+Instant interface updates for a seamless user experience.  
+
+✅ **Responsive Design**  
+Works flawlessly on desktop, tablet, and mobile.  
+
+✅ **API Documentation**  
+Integrated Swagger/OpenAPI docs for easy backend exploration.  
+
+### Upcoming Features (Roadmap)  
+🔜 **Ingredient Search**  
+🔜 **User Authentication**  
+🔜 **Shopping List Generator**  
+🔜 **Meal Calendar Integration**  
+
+---
 
 ## 🛠️ Tech Stack  
 
-### Frontend  
-- **React** (with Vite)  
-- **TypeScript**  
-- **React Query** (for API state management)  
-- **TailwindCSS** (for styling)  
-- **Vitest** (for component testing)  
-
-### Backend  
-- **FastAPI** (for API development)  
-- **PostgreSQL** (for database)  
-- **SQLAlchemy** (for ORM)  
-- **Pydantic** (for data validation)  
-- **Alembic** (for database migrations)  
-
-## 🚀 Features  
-
-### Core Features  
-✅ Recipe Management (Create, Read, Update, Delete)  
-✅ Recipe Filtering by Cuisine & Cooking Time  
-✅ Favorite/Save Recipes Feature  
-✅ Optimistic UI Updates  
-✅ Responsive Design  
-✅ API Documentation with OpenAPI/Swagger  
-
-### Bonus Features (If Implemented)  
-✨ Recipe Search with Ingredient Filtering  
-✨ Sorting Options for Recipes  
-✨ Basic Authentication System  
-✨ Shopping List Generator  
-
-## 📂 Project Structure  
-```
-/recipe-planner-app
-│── frontend/        # React application  
-│── backend/         # FastAPI backend  
-│── .env.example     # Environment variables template  
-│── README.md        # Documentation  
-│── docker-compose.yml # Docker setup  
-│── tests/           # Unit tests  
-```  
-
-## ⚡ Setup & Installation  
-
-### Prerequisites  
-- **Node.js** (v18+)  
-- **Python** (v3.10+)  
-- **PostgreSQL** (Installed & Running)  
-- **Docker** (Optional, for containerized setup)  
-
-### 🔧 Backend Setup  
-
-1. Clone the repository  
-   ```sh
-   git clone git@github.com:Dennis7456/flavor-fusion.git
-   cd flavor-fusion/backend
-   ```  
-2. Create and activate a virtual environment  
-   ```sh
-   python -m venv venv  
-   source venv/bin/activate  # On Windows: venv\Scripts\activate  
-   ```  
-3. Install dependencies  
-   ```sh
-   pip install -r requirements.txt  
-   ```  
-4. Set up environment variables  
-   ```sh
-   cd ..
-   cp .env.example .env  
-   ```  
-5. Create migrations folder  
-   ```sh
-   cd backend
-   alembic init migrations
-   ```
-6. Set up Alembic for database migrations  
-   ```sh
-   cd backend
-   alembic init migrations
-   ```
-6. Set up Alembic for database migrations  
-   ```sh
-backend/
-│── alembic.ini                # Alembic configuration file
-│── migrations/
-│   ├── env.py                 # Alembic migration environment
-│   ├── README                 # Migration documentation
-│   ├── script.py.mako         # Template for new migrations
-│   └── versions/              # Stores generated migration scripts
-
-   ```
-7. Configure the Database URL in the .env file
-   ```sh
-   DATABASE_URL=postgresql+psycopg2://root:yourpassword@localhost:5432/flavor_fusion_db
-   ```
-8. Configure the Database URL in alembic.ini file
-   ```sh
-   sqlalchemy.url = postgresql+psycopg2://root:yourpassword@localhost:5432/flavor_fusion_db
-   ```
-9. Ensure Base is Imported in env.py inside the migrations folder
-   ```sh
-   from app.models import Base
-   target_metadata = Base.metadata
-   ```
-10. Apply database migrations  
-   ```sh
-   alembic revision --autogenerate -m "Initial migration"
-   ```
-11. Apply database migrations  
-   ```sh
-   alembic upgrade head  
-   ```
-6. Run the backend server  
-   ```sh
-   uvicorn main:app --reload  
-   ```  
-
-### 🖥️ Frontend Setup  
-
-1. Navigate to the frontend directory  
-   ```sh
-   cd ../frontend  
-   ```  
-2. Install dependencies  
-   ```sh
-   npm install  
-   ```  
-3. Start the frontend  
-   ```sh
-   npm run dev  
-   ```  
-
-## 🛠️ Running Tests  
-
-### Backend Tests  
-```sh
-PYTHONPATH=. pytest
-```  
-
-### Frontend Tests  
-```sh
-npm run test  
-```  
-
-## 📌 API Documentation  
-Once the backend is running, access the API documentation at:  
-- **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)  
-- **Redoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)  
-
-## 📝 What Could Be Improved With More Time  
-- Implementing a full authentication system (JWT-based login/logout)  
-- Adding end-to-end testing with Cypress  
-- Improving accessibility (ARIA attributes, keyboard navigation)  
-- Caching API requests for performance optimization  
-- Deploying the app to cloud services (AWS/GCP)  
-
-## 🤝 Contribution  
-Feel free to fork this project, make improvements, and submit a pull request!  
+| Frontend               | Backend                | Database         | Tools            |  
+|------------------------|------------------------|------------------|------------------|  
+| React + TypeScript     | FastAPI                | PostgreSQL       | Docker           |  
+| React Query            | SQLAlchemy (ORM)       | Alembic          | TailwindCSS      |  
+| Vite                   | Pydantic (Validation)  |                  | Vitest           |  
 
 ---
+
+## 🚀 Quick Start  
+
+### Prerequisites  
+- Node.js v18+  
+- Python 3.10+  
+- PostgreSQL (running locally)  
+- Docker (optional)  
+
+### Full Setup Guide  
+
+1. **Clone Repository**  
+   ```bash
+   git clone git@github.com:Dennis7456/recipe-planner-app.git
+   cd recipe-planner-app
+   ```
+
+2. **Backend Setup**  
+   ```bash
+   cd backend
+   python -m venv venv
+   source venv/bin/activate  # Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+3. **Configure Environment**  
+   ```bash
+   cp ../.env.example ../.env  # Update values in .env file
+   ```
+
+4. **Database Setup**  
+   ```bash
+   alembic init migrations
+   # Configure alembic.ini and migrations/env.py with your DB URL
+   alembic upgrade head
+   ```
+
+5. **Launch Backend**  
+   ```bash
+   uvicorn main:app --reload
+   ```
+
+6. **Frontend Setup**  
+   ```bash
+   cd ../frontend
+   npm install
+   npm run dev
+   ```
+
+---
+
+## 📂 Project Structure  
+```  
+recipe-planner-app/  
+├── frontend/            # React components, hooks, tests  
+├── backend/             # API routes, models, migrations  
+├── tests/               # Unit/integration tests  
+├── docker-compose.yml   # Container configuration  
+└── .env.example         # Environment template  
+```  
+
+---
+
+## 🔍 Explore the API  
+Access interactive documentation after launching the backend:  
+- **Swagger UI**: `http://localhost:8000/docs`  
+- **Redoc**: `http://localhost:8000/redoc`  
+
+---
+
+## 🧪 Testing  
+**Backend Tests**  
+```bash
+PYTHONPATH=. pytest -v
+```  
+
+**Frontend Tests**  
+```bash
+cd frontend && npm test
+```  
+
+---
+
+## 🛠️ Future Improvements  
+- Implement JWT authentication  
+- Add meal prep scheduling  
+- Develop grocery list export  
+- Enhance search with AI suggestions  
+- Create nutrition tracking  
+
+---
+
+## 🤝 Contribute  
+We welcome contributions! Please:  
+1. Fork the repository  
+2. Create a feature branch  
+3. Submit a PR with detailed notes  
+
+--- 
+
+**Happy Cooking!** 👨🍳👩🍳
