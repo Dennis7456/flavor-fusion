@@ -25,6 +25,8 @@ interface Recipe {
   id: string;
   title: string;
   description: string;
+  cuisine_type: string;  
+  cooking_time: number; 
   likes: number;
   userId: string;
 }
@@ -49,11 +51,17 @@ const RecipeGrid = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("newest");
+  const [cuisineFilter, setCuisineFilter] = useState("all");
+  const [cookingTimeFilter, setCookingTimeFilter] = useState<number | "all">("all");
 
   const itemsPerPage = 9;
-  const filteredRecipes = recipes.filter((recipe) =>
-    recipe.title.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredRecipes = recipes.filter((recipe) => {
+    const matchesSearch = recipe.title.toLowerCase().includes(search.toLowerCase());
+    const matchesCuisine = cuisineFilter === "all" || recipe.cuisine_type === cuisineFilter;
+    const matchesTime = cookingTimeFilter === "all" || recipe.cooking_time <= cookingTimeFilter;
+    
+    return matchesSearch && matchesCuisine && matchesTime;
+  });
 
   const sortedRecipes = [...filteredRecipes].sort((a, b) => {
     switch (sortBy) {
@@ -90,11 +98,40 @@ const RecipeGrid = ({
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-xs"
         />
-        <Select value={sortBy} onValueChange={setSortBy}>
-          <SelectTrigger className="w-[180px]">
+        {/* Cuisine Type Filter */}
+        <Select value={cuisineFilter} onValueChange={setCuisineFilter}>
+          <SelectTrigger className="w-[180px] bg-white">
+            <SelectValue placeholder="Cuisine Type" />
+          </SelectTrigger>
+          <SelectContent className="bg-white">
+            <SelectItem value="all">All Cuisines</SelectItem>
+            <SelectItem value="chinese">Chinese</SelectItem>
+            <SelectItem value="indian">Indian</SelectItem>
+            <SelectItem value="japanese">Japanese</SelectItem>
+          </SelectContent>
+        </Select>
+
+      {/* Cooking Time Filter */}
+  <Select 
+    value={cookingTimeFilter.toString()} 
+    onValueChange={(v) => setCookingTimeFilter(v === "all" ? "all" : Number(v))}
+  >
+    <SelectTrigger className="w-[180px] bg-white">
+      <SelectValue placeholder="Cooking Time" />
+    </SelectTrigger>
+    <SelectContent className="bg-white">
+      <SelectItem value="all">Any Time</SelectItem>
+      <SelectItem value="30">Under 30 mins</SelectItem>
+      <SelectItem value="60">Under 60 mins</SelectItem>
+      <SelectItem value="90">Under 90 mins</SelectItem>
+    </SelectContent>
+  </Select>
+
+  <Select value={sortBy} onValueChange={setSortBy}>
+          <SelectTrigger className="w-[180px] bg-white">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-white">
             <SelectItem value="newest">Newest</SelectItem>
             <SelectItem value="likes">Most Liked</SelectItem>
             <SelectItem value="title">Title</SelectItem>
@@ -111,6 +148,14 @@ const RecipeGrid = ({
               </CardHeader>
             </Link>
             <CardContent>
+            <div className="flex items-center gap-2 mb-2">
+    <span className="text-sm text-gray-500">
+      {recipe.cuisine_type}
+    </span>
+    <span className="text-sm text-gray-500">
+      • {recipe.cooking_time} mins
+    </span>
+  </div>
               <p className="text-gray-600 line-clamp-2 mb-4">
                 {recipe.description}
               </p>
