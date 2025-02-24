@@ -12,7 +12,10 @@ from typing import List
 
 router = APIRouter()
 
-@router.post("/recipes/{recipe_id}/favorite")
+@router.post(
+        "/recipes/{recipe_id}/favorite",
+        summary="Toggle favorite status for a recipe",
+        response_model=schemas.FavouriteOut)
 def toggle_favorite(
     recipe_id: int,
     db: Session = Depends(get_db),
@@ -20,13 +23,19 @@ def toggle_favorite(
 ):
     return crud.toggle_favorite(db, recipe_id, current_user.id)
 
-@router.get("/users/favorites", response_model=List[schemas.Recipe])
+@router.get(
+        "/users/favorites", 
+        summary="Get all favorited recipes for the current user",
+        response_model=List[schemas.Recipe])
 def get_favorites(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user)
 ):
     return crud.get_favorites(db, current_user.id)
 
-@router.get("/recipes/{recipe_id}/favorite-count")
+@router.get(
+        "/recipes/{recipe_id}/favorite-count",
+        summary="Get the number of favorites for a recipe",
+        response_model=schemas.FavouriteCount)
 def get_favorite_count(recipe_id: int, db: Session = Depends(get_db)):
     return {"count": crud.count_favorites(db, recipe_id)}

@@ -8,7 +8,10 @@ from ..auth import get_current_user
 
 router = APIRouter()
 
-@router.post("/recipes/", response_model=schemas.Recipe)
+@router.post(
+        "/recipes/", 
+        summary="Create a new recipe",
+        response_model=schemas.Recipe)
 def create_recipe(
     recipe: schemas.RecipeCreate, 
     db: Session = Depends(get_db),
@@ -19,7 +22,10 @@ def create_recipe(
     except SQLAlchemyError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
-@router.get("/recipes/", response_model=List[schemas.Recipe])
+@router.get(
+        "/recipes/", 
+        response_model=List[schemas.Recipe],
+        summary="Get all recipes")
 def read_recipes(
     skip: int = 0, 
     limit: int = 100, 
@@ -31,7 +37,11 @@ def read_recipes(
     except SQLAlchemyError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
-@router.get("/recipes/{recipe_id}", response_model=schemas.Recipe)
+@router.get(
+        "/recipes/{recipe_id}", 
+        response_model=schemas.Recipe,
+        summary="Get a recipe by ID"
+        )
 def read_recipe(recipe_id: int, db: Session = Depends(get_db)):
     try:
         db_recipe = crud.get_recipe(db, recipe_id)
@@ -41,7 +51,10 @@ def read_recipe(recipe_id: int, db: Session = Depends(get_db)):
     except SQLAlchemyError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
-@router.put("/recipes/{recipe_id}", response_model=schemas.Recipe)
+@router.put(
+        "/recipes/{recipe_id}", 
+        response_model=schemas.Recipe,
+        summary="Update a recipe by ID")
 def update_recipe(
     recipe_id: int, 
     recipe: schemas.RecipeCreate, 
@@ -56,7 +69,10 @@ def update_recipe(
     except SQLAlchemyError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
-@router.delete("/recipes/{recipe_id}", response_model=schemas.Recipe)
+@router.delete(
+        "/recipes/{recipe_id}", 
+        response_model=schemas.Recipe,
+        summary="Delete a recipe by ID")
 def delete_recipe(
     recipe_id: int, 
     db: Session = Depends(get_db),

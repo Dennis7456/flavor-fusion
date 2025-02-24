@@ -69,6 +69,12 @@ class Favourite(FavouriteCreate):
     class Config:
         orm_mode = True
 
+class FavouriteOut(BaseModel):
+    message: str
+
+class FavouriteCount(BaseModel):
+    count: int
+
 class Token(BaseModel):
     access_token: str
     token_type: str

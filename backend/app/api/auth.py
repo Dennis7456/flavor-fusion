@@ -11,14 +11,20 @@ class OAuth2EmailPasswordRequestForm:
         self.email = email  # Map email to username for compatibility
         self.password = password
 
-@router.post("/register", response_model=schemas.UserResponse)
+@router.post(
+        "/register", 
+        summary="Register a new user",
+        response_model=schemas.UserResponse)
 def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
     return crud.create_user(db, user)
 
-@router.post("/login", response_model=schemas.Token)
+@router.post(
+        "/login",
+         summary = "Login and get an access token", 
+         response_model=schemas.Token)
 async def login_for_access_token(
     form_data: OAuth2EmailPasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = crud.get_user_by_email(db, email=form_data.email)
