@@ -104,7 +104,7 @@ This is a full-stack recipe management and meal planning application. Users can 
 
 ### Backend Tests  
 ```sh
-pytest  
+PYTHONPATH=. pytest
 ```  
 
 ### Frontend Tests  
