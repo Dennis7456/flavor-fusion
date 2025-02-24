@@ -77,10 +77,48 @@ This is a full-stack recipe management and meal planning application. Users can 
    cd ..
    cp .env.example .env  
    ```  
-5. Apply database migrations  
+5. Create migrations folder  
+   ```sh
+   cd backend
+   alembic init migrations
+   ```
+6. Set up Alembic for database migrations  
+   ```sh
+   cd backend
+   alembic init migrations
+   ```
+6. Set up Alembic for database migrations  
+   ```sh
+backend/
+│── alembic.ini                # Alembic configuration file
+│── migrations/
+│   ├── env.py                 # Alembic migration environment
+│   ├── README                 # Migration documentation
+│   ├── script.py.mako         # Template for new migrations
+│   └── versions/              # Stores generated migration scripts
+
+   ```
+7. Configure the Database URL in the .env file
+   ```sh
+   DATABASE_URL=postgresql+psycopg2://root:yourpassword@localhost:5432/flavor_fusion_db
+   ```
+8. Configure the Database URL in alembic.ini file
+   ```sh
+   sqlalchemy.url = postgresql+psycopg2://root:yourpassword@localhost:5432/flavor_fusion_db
+   ```
+9. Ensure Base is Imported in env.py inside the migrations folder
+   ```sh
+   from app.models import Base
+   target_metadata = Base.metadata
+   ```
+10. Apply database migrations  
+   ```sh
+   alembic revision --autogenerate -m "Initial migration"
+   ```
+11. Apply database migrations  
    ```sh
    alembic upgrade head  
-   ```  
+   ```
 6. Run the backend server  
    ```sh
    uvicorn main:app --reload  
