@@ -56,8 +56,8 @@ Integrated Swagger/OpenAPI docs for easy backend exploration.
 
 1. **Clone Repository**  
    ```bash
-   git clone git@github.com:Dennis7456/recipe-planner-app.git
-   cd recipe-planner-app
+   git clone git@github.com:Dennis7456/flavor-fusion.git
+   cd flavor-fusion
    ```
 
 2. **Backend Setup**  
