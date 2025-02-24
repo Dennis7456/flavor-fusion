@@ -17,3 +17,5 @@ build/
 
 # igone venv in backend
 backend/venv/
+backend/app/__pycache__/
+backend/__pycache__/
