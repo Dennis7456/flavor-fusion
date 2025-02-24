@@ -8,6 +8,8 @@ from passlib.context import CryptContext
 import os
 from dotenv import load_dotenv
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -43,4 +45,7 @@ def get_current_user(db=Depends(get_db), token: str = Depends(oauth2_scheme)):
     if user is None:
         raise credentials_exception
     return user
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
 

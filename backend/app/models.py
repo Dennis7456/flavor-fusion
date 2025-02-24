@@ -17,9 +17,9 @@ favourites = Table(
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True)
-    email = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
+    username = Column(String, unique=True, index=True, nullable=False)
+    email = Column(String, unique=True, index=True, nullable=False)
+    hashed_password = Column(String, nullable=False)
     recipes = relationship("Recipe", back_populates="user")
     favourites = relationship("Recipe", secondary=favourites, back_populates="users_who_favourited")
 

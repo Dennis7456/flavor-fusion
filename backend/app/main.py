@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware  # Import CORSMiddleware
-from .database import SessionLocal, engine
+from .database import SessionLocal, engine, IS_TESTING
 from . import models
 from .api import recipes, auth, favourites
 from dotenv import load_dotenv
@@ -9,7 +9,8 @@ import os
 load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-models.Base.metadata.create_all(bind=engine)
+if not IS_TESTING:
+    models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 

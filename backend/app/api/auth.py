@@ -8,7 +8,7 @@ router = APIRouter()
 
 class OAuth2EmailPasswordRequestForm:
     def __init__(self, email: str = Form(...), password: str = Form(...)):
-        self.username = email  # Map email to username for compatibility
+        self.email = email  # Map email to username for compatibility
         self.password = password
 
 @router.post("/register", response_model=schemas.UserResponse)
@@ -21,7 +21,8 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
 @router.post("/login", response_model=schemas.Token)
 async def login_for_access_token(
     form_data: OAuth2EmailPasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = crud.get_user_by_email(db, email=form_data.username)
+    user = crud.get_user_by_email(db, email=form_data.email)
+    print(f"User: {user}")
 
     if not user or not user.verify_password(form_data.password):
         raise HTTPException(
