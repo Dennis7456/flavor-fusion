@@ -74,6 +74,7 @@ This is a full-stack recipe management and meal planning application. Users can 
    ```  
 4. Set up environment variables  
    ```sh
+   cd ..
    cp .env.example .env  
    ```  
 5. Apply database migrations  
