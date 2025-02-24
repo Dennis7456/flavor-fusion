@@ -19,3 +19,6 @@ build/
 backend/venv/
 backend/app/__pycache__/
 backend/__pycache__/
+
+# ignore migrations folder
+backend/migrations
