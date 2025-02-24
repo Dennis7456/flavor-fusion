@@ -38,6 +38,20 @@ def read_recipes(
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 @router.get(
+    "/recipes/dashboard",
+    response_model=List[schemas.Recipe],
+    summary="Get all recipes for the current user"
+)
+def read_user_recipes(
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    try:
+        return crud.get_user_recipes(db, current_user)
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+    
+@router.get(
         "/recipes/{recipe_id}", 
         response_model=schemas.Recipe,
         summary="Get a recipe by ID"
@@ -50,7 +64,8 @@ def read_recipe(recipe_id: int, db: Session = Depends(get_db)):
         return db_recipe
     except SQLAlchemyError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
-
+    
+    
 @router.put(
         "/recipes/{recipe_id}", 
         response_model=schemas.Recipe,

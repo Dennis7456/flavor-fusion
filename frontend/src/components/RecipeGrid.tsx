@@ -21,21 +21,25 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+
 interface Recipe {
-  id: string;
+  id: number;
   title: string;
-  description: string;
-  cuisine_type: string;  
-  cooking_time: number; 
+  cuisine_type: string;
+  cooking_time: number;
+  instructions: string;
+  ingredients: string;
+  userId: number;
   likes: number;
-  userId: string;
+  userHasLiked: boolean;
 }
+
 
 interface RecipeGridProps {
   recipes: Recipe[];
   isLoading: boolean;
   userRecipes?: boolean;
-  onLike?: (id: string) => void;
+  onLike?: (id: number) => void;
   onEdit?: (recipe: Recipe) => void;
   onDelete?: (recipe: Recipe) => void;
 }
@@ -139,6 +143,11 @@ const RecipeGrid = ({
         </Select>
       </div>
 
+      {/* Show "No Recipes" message if no recipes are available */}
+    {paginatedRecipes.length === 0 && !isLoading && (
+      <p className="text-center text-gray-500 text-xl">You have no recipes yet :(</p>
+    )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {paginatedRecipes.map((recipe) => (
           <Card key={recipe.id} className="hover:shadow-lg transition-shadow">
@@ -157,25 +166,29 @@ const RecipeGrid = ({
     </span>
   </div>
               <p className="text-gray-600 line-clamp-2 mb-4">
-                {recipe.description}
+                {recipe.ingredients}
+              </p>
+              <p className="text-gray-600 line-clamp-2 mb-4">
+                {recipe.instructions}
               </p>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      onLike?.(recipe.id);
-                    }}
-                  >
-                    <Heart
-                      className={`h-5 w-5 ${
-                        recipe.likes > 0 ? "fill-red-500 text-red-500" : ""
-                      }`}
-                    />
-                    <span className="ml-1">{recipe.likes}</span>
-                  </Button>
+                <Button
+  variant="ghost"
+  size="sm"
+  onClick={(e) => {
+    e.preventDefault()
+    onLike?.(recipe.id)
+  }}
+>
+  <Heart
+    className={`h-5 w-5 ${
+      recipe.userHasLiked ? "fill-red-500 text-red-500" : "text-gray-500"
+    }`}
+  />
+  <span className="ml-1">{recipe.likes}</span>
+</Button>
+
                 </div>
                 {userRecipes && (
                   <div className="flex gap-2">

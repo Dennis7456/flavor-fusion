@@ -13,6 +13,11 @@ def get_recipes(db: Session, skip: int = 0, limit: int = 100):
 def get_recipe(db: Session, recipe_id: int):
     return db.query(models.Recipe).filter(models.Recipe.id == recipe_id).first()
 
+def get_user_recipes(db: Session, current_user: User):
+    if not current_user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
+    return db.query(models.Recipe).filter(models.Recipe.user_id == current_user.id).all()
+
 def create_recipe(db: Session, recipe: schemas.RecipeCreate, current_user: User):
     if not current_user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
