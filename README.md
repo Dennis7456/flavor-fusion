@@ -70,19 +70,23 @@ Integrated Swagger/OpenAPI docs for easy backend exploration.
 
 3. **Configure Environment**  
    ```bash
+   cd ..
    cp ../.env.example ../.env  # Update values in .env file
    ```
 
 4. **Database Setup**  
    ```bash
+   cd backend
    alembic init migrations
    # Configure alembic.ini and migrations/env.py with your DB URL
+   alembic revision --autogenerate -m "initial migration"
    alembic upgrade head
    ```
 
 5. **Launch Backend**  
    ```bash
-   uvicorn main:app --reload
+   python seed.py
+   uvicorn app.main:app --reload
    ```
 
 6. **Frontend Setup**  
